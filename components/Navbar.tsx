@@ -1,5 +1,6 @@
 import React from 'react';
-import { useTheme} from '@material-ui/core/styles';
+import {useTheme} from '@material-ui/core/styles';
+import {useRouter} from 'next/router';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -17,9 +18,16 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 
+const menuItems = [
+    {text: 'Главная', href: '/'},
+    {text: 'Список треков', href: '/tracks'},
+    {text: 'Список альбомов', href: '/albums'},
+];
+
 export default function Navbar() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+    const router = useRouter();
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -31,7 +39,7 @@ export default function Navbar() {
 
     return (
         <div>
-            <CssBaseline />
+            <CssBaseline/>
             <AppBar
                 position="fixed"
             >
@@ -42,7 +50,7 @@ export default function Navbar() {
                         onClick={handleDrawerOpen}
                         edge="start"
                     >
-                        <MenuIcon />
+                        <MenuIcon/>
                     </IconButton>
                     <Typography variant="h6" noWrap>
                         Persistent drawer
@@ -56,15 +64,15 @@ export default function Navbar() {
             >
                 <div>
                     <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                        {theme.direction === 'ltr' ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
                     </IconButton>
                 </div>
-                <Divider />
+                <Divider/>
                 <List>
-                    {['Главная', 'Список треков', 'Список альбомов'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                            <ListItemText primary={text} />
+                    {menuItems.map(({text, href}, index) => (
+                        <ListItem button key={href} onClick={() => router.push(href)}>
+                            <ListItemIcon>{index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}</ListItemIcon>
+                            <ListItemText primary={text}/>
                         </ListItem>
                     ))}
                 </List>
