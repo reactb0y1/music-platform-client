@@ -1,11 +1,16 @@
 import React from 'react';
-import {Button} from "@material-ui/core";
+import Navbar from '../components/Navbar';
+import style from './index.module.css';
 
 const Index = () => {
     return (
-        <div>
-            Главная страница
-        </div>
+        <>
+            <Navbar/>
+            <div className={style.center}>
+                <h1>Добро пожаловать</h1>
+                <h3>Здесь собраны лучшие треки!</h3>
+            </div>
+        </>
     );
 };
 
