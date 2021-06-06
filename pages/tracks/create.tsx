@@ -1,24 +1,46 @@
 import React, {useState} from 'react';
 import MainLayout from "../../layout/MainLayout";
 import StepWrapper from "../../components/StepWrapper";
-import {Button, Grid} from "@material-ui/core";
+import {Button, Grid, TextField} from "@material-ui/core";
+import FileUpload from "../../components/FileUpload";
 
 const Create = () => {
     const [activeStep, setActiveStep] = useState(0);
     const back = () => setActiveStep(prev => prev - 1);
     const next = () => setActiveStep(prev => prev + 1);
+    const [picture, setPicture] = useState(null);
+    const [audio, setAudio] = useState(null);
 
     return (
         <MainLayout>
             <StepWrapper activeStep={activeStep}>
                 {activeStep === 0 &&
-                    <h1>STEP 1</h1>
+                    <Grid container direction={'column'} style={{padding: 20}}>
+                        <TextField
+                            label={'Название трека'}
+                            style={{marginTop: 10}}
+                        />
+                        <TextField
+                            label={'Имя исполнителя'}
+                            style={{marginTop: 10}}
+                        />
+                        <TextField
+                            label={'Слова к треку'}
+                            style={{marginTop: 10}}
+                            multiline
+                            rows={3}
+                        />
+                    </Grid>
                 }
                 {activeStep === 1 &&
-                    <h1>STEP 2</h1>
+                    <FileUpload setFile={setPicture} accept={'image/*'}>
+                        <Button>Загрузить изображение</Button>
+                    </FileUpload>
                 }
                 {activeStep === 2 &&
-                    <h1>STEP 3</h1>
+                    <FileUpload setFile={setAudio} accept={'audio/*'}>
+                        <Button>Загрузить аудио</Button>
+                    </FileUpload>
                 }
             </StepWrapper>
             <Grid container justifyContent={"space-between"}>
