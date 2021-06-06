@@ -1,7 +1,8 @@
 import React from 'react';
 import Navbar from "../components/Navbar";
 import {Container} from "@material-ui/core";
-import styles from './MainLauout.module.css'
+import styles from '../styles/MainLauout.module.scss'
+import Player from "../components/Player";
 
 const MainLayout: React.FC = ({children}) => {
     return (
@@ -10,6 +11,7 @@ const MainLayout: React.FC = ({children}) => {
             <Container className={styles.containerChildren}>
                 {children}
             </Container>
+            <Player/>
         </>
     );
 };
