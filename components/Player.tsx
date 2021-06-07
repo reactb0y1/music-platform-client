@@ -22,13 +22,14 @@ const Player = () => {
         comments: []
     };
 
-    const {pause} = useTypedSelector(state => state.player);
-    const {pauseTrack, playTrack} = useAction();
+    const {pause, volume} = useTypedSelector(state => state.player);
+    const {pauseTrack, playTrack, setVolume, setActiveTrack, setCurrentTime, setDuration} = useAction();
 
     useEffect(() => {
         if (!audio) {
             audio = new Audio();
             audio.src = track.audio;
+            audio.volume = volume / 100;
         }
     }, []);
 
@@ -42,6 +43,11 @@ const Player = () => {
         }
     };
 
+    const changeVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
+        audio.volume = Number(e.target.value) / 100;
+        setVolume(Number(e.target.value));
+    };
+
     return (
         <div className={styles.palyer}>
             <IconButton onClick={play}>
@@ -53,7 +59,7 @@ const Player = () => {
             </Grid>
             <TrackProgress left={0} right={100} onChange={() => {}} />
             <VolumeUp style={{marginLeft: 'auto'}}/>
-            <TrackProgress left={0} right={100} onChange={() => {}} />
+            <TrackProgress left={volume} right={100} onChange={changeVolume} />
         </div>
     );
 };
