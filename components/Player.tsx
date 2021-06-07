@@ -22,16 +22,29 @@ const Player = () => {
         comments: []
     };
 
-    const {pause, volume} = useTypedSelector(state => state.player);
+    const {pause, volume, active, currentTime, duration} = useTypedSelector(state => state.player);
     const {pauseTrack, playTrack, setVolume, setActiveTrack, setCurrentTime, setDuration} = useAction();
 
     useEffect(() => {
         if (!audio) {
             audio = new Audio();
-            audio.src = track.audio;
-            audio.volume = volume / 100;
+        } else {
+            setAudio();
         }
     }, []);
+
+    const setAudio = () => {
+        if (active) {
+            audio.src = track.audio;
+            audio.volume = volume / 100;
+            audio.onloadedmetadata = () => {
+                setDuration(Math.ceil(audio.duration))
+            };
+            audio.ontimeupdate = () => {
+                setCurrentTime(Math.ceil(audio.currentTime))
+            };
+        }
+    };
 
     const play = () => {
         if (pause) {
@@ -48,6 +61,11 @@ const Player = () => {
         setVolume(Number(e.target.value));
     };
 
+    const changeCurrentTime = (e: React.ChangeEvent<HTMLInputElement>) => {
+        audio.currentTime = Number(e.target.value);
+        setCurrentTime(Number(e.target.value));
+    };
+
     return (
         <div className={styles.palyer}>
             <IconButton onClick={play}>
@@ -57,7 +75,7 @@ const Player = () => {
                 <div>{track.name}</div>
                 <div className={stylesTrack.track__artist}>{track.artist}</div>
             </Grid>
-            <TrackProgress left={0} right={100} onChange={() => {}} />
+            <TrackProgress left={currentTime} right={duration} onChange={changeCurrentTime} />
             <VolumeUp style={{marginLeft: 'auto'}}/>
             <TrackProgress left={volume} right={100} onChange={changeVolume} />
         </div>
