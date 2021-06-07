@@ -1,13 +1,16 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Pause, PlayArrow, VolumeUp} from "@material-ui/icons";
 import {Grid, IconButton} from "@material-ui/core";
 import styles from '../styles/Player.module.scss'
 import stylesTrack from '../styles/TrackItem.module.scss'
 import {ITrack} from "../types/tracks";
 import TrackProgress from "./TrackProgress";
+import {useTypedSelector} from "../hooks/useTypedSelector";
+import {useAction} from "../hooks/useAction";
+
+let audio;
 
 const Player = () => {
-    const active = false;
     const track: ITrack = {
         _id: '1',
         name: 'Track 1',
@@ -19,10 +22,30 @@ const Player = () => {
         comments: []
     };
 
+    const {pause} = useTypedSelector(state => state.player);
+    const {pauseTrack, playTrack} = useAction();
+
+    useEffect(() => {
+        if (!audio) {
+            audio = new Audio();
+            audio.src = track.audio;
+        }
+    }, []);
+
+    const play = () => {
+        if (pause) {
+            playTrack();
+            audio.play();
+        } else {
+            pauseTrack();
+            audio.pause();
+        }
+    };
+
     return (
         <div className={styles.palyer}>
-            <IconButton onClick={e => e.stopPropagation()}>
-                {active ? <Pause/> : <PlayArrow/>}
+            <IconButton onClick={play}>
+                {pause ? <PlayArrow/> : <Pause/>}
             </IconButton>
             <Grid container direction={"column"} className={stylesTrack.track__text}>
                 <div>{track.name}</div>
