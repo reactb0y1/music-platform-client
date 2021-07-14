@@ -10,7 +10,7 @@ export const trackReducer = (state = initialState, action: TrackAction): TrackSt
         case TrackActionTypes.FETCH_TRACKS_ERROR:
             return {...state, error: action.payload};
         case TrackActionTypes.FETCH_TRACKS:
-            return {error: '', tracks: action.type};
+            return {error: '', tracks: action.payload}
         default:
             return state
     }

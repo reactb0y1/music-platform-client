@@ -5,11 +5,11 @@ import {useRouter} from "next/router";
 import TrackList from "../../components/TrackList";
 import {useTypedSelector} from "../../hooks/useTypedSelector";
 import {NextThunkDispatch, wrapper} from "../../store";
-import {fetchTrack} from "../../store/actions-creators/track";
+import {fetchTracks} from "../../store/actions-creators/track";
 
 const Tracks = () => {
     const router = useRouter();
-    const {tracks, error} = useTypedSelector(state => state.tracks);
+    const {tracks, error} = useTypedSelector(state => state.track);
 
     if (error) {
         return <MainLayout>
@@ -40,5 +40,5 @@ export default Tracks;
 
 export const getServerSideProps = wrapper.getServerSideProps(async ({store}) => {
     const dispatch = store.dispatch as NextThunkDispatch;
-    await dispatch(await fetchTrack())
+    await dispatch(await fetchTracks())
 });

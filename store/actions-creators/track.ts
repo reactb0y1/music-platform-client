@@ -2,7 +2,7 @@ import {Dispatch} from "react";
 import {TrackAction, TrackActionTypes} from "../../types/tracks";
 import axios from "axios";
 
-export const fetchTrack = () => {
+export const fetchTracks = () => {
     return async (dispatch: Dispatch<TrackAction>) => {
         try {
             const response = await axios.get('http://localhost:5000/tracks');
@@ -10,7 +10,7 @@ export const fetchTrack = () => {
         } catch (e) {
             dispatch({
                 type: TrackActionTypes.FETCH_TRACKS_ERROR,
-                payload: "Произошла ошибка при загурзке треков"
+                payload: 'Произошла ошибка при загрузке треков'
             })
         }
     }

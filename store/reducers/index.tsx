@@ -5,7 +5,7 @@ import {trackReducer} from "./trackReducer";
 
 const rootReducer = combineReducers({
     player: playerReducer,
-    tracks: trackReducer
+    track: trackReducer
 });
 
 export const reducer = (state, action) => {
